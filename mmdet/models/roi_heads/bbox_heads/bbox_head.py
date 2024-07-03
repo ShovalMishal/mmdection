@@ -557,6 +557,8 @@ class BBoxHead(BaseModule):
             # It needs to return the raw results without nms.
             results.bboxes = bboxes
             results.scores = scores
+        elif "bbox_regressor_mode" in rcnn_test_cfg:
+            results.bboxes = bboxes
         else:
             det_bboxes, det_labels = multiclass_nms(
                 bboxes,

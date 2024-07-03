@@ -155,7 +155,6 @@ class DetLocalVisualizer(Visualizer):
                 if 'scores' in instances:
                     score = round(float(instances.scores[i]) * 100, 1)
                     label_text += f': {score}'
-
                 self.draw_texts(
                     label_text,
                     pos,
@@ -402,7 +401,9 @@ class DetLocalVisualizer(Visualizer):
             # TODO: Supported in mmengine's Viusalizer.
             out_file: Optional[str] = None,
             pred_score_thr: float = 0.3,
-            step: int = 0) -> None:
+            step: int = 0,
+            save_separately: bool = True, 
+            draw_text=True) -> None:
         """Draw datasample and save to all backends.
 
         - If GT and prediction are plotted at the same time, they are
@@ -466,7 +467,7 @@ class DetLocalVisualizer(Visualizer):
                 pred_instances = pred_instances[
                     pred_instances.scores > pred_score_thr]
                 pred_img_data = self._draw_instances(image, pred_instances,
-                                                     classes, palette)
+                                                     classes, palette, draw_text=draw_text)
 
             if 'pred_sem_seg' in data_sample:
                 pred_img_data = self._draw_sem_seg(pred_img_data,
@@ -501,7 +502,13 @@ class DetLocalVisualizer(Visualizer):
             self.show(drawn_img, win_name=name, wait_time=wait_time)
 
         if out_file is not None:
-            mmcv.imwrite(drawn_img[..., ::-1], out_file)
+            if save_separately:
+                gt_out_file = out_file.replace('.png', '_gt.png')
+                mmcv.imwrite(gt_img_data[..., ::-1], gt_out_file)
+                pred_out_file = out_file.replace('.png', '_pred.png')
+                mmcv.imwrite(pred_img_data[..., ::-1], pred_out_file)
+            else:
+                mmcv.imwrite(drawn_img[..., ::-1], out_file)
         else:
             self.add_image(name, drawn_img, step)
 

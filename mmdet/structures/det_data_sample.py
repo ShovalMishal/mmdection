@@ -157,6 +157,18 @@ class DetDataSample(BaseDataElement):
     def pred_instances(self):
         del self._pred_instances
 
+    @property
+    def predicted_patches(self) -> InstanceData:
+        return self._predicted_patches
+
+    @predicted_patches.setter
+    def predicted_patches(self, value: InstanceData):
+        self.set_field(value, '_predicted_patches', dtype=InstanceData)
+
+    @predicted_patches.deleter
+    def predicted_patches(self):
+        del self._predicted_patches
+
     # directly add ``pred_track_instances`` in ``DetDataSample``
     # so that the ``TrackDataSample`` does not bother to access the
     # instance-level information.

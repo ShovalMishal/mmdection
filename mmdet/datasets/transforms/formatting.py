@@ -115,6 +115,8 @@ class PackDetInputs(BaseTransform):
                         results[key])
         data_sample.gt_instances = instance_data
         data_sample.ignored_instances = ignore_instance_data
+        if 'predicted_patches' in results:
+            data_sample.predicted_patches = results['predicted_patches']
 
         if 'proposals' in results:
             proposals = InstanceData(

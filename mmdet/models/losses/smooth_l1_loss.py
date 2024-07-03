@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-from mmdet.registry import MODELS
+from mmdet.registry import MODELS, METRICS
 from .utils import weighted_loss
 
 
@@ -51,7 +51,7 @@ def l1_loss(pred: Tensor, target: Tensor) -> Tensor:
     loss = torch.abs(pred - target)
     return loss
 
-
+@METRICS.register_module()
 @MODELS.register_module()
 class SmoothL1Loss(nn.Module):
     """Smooth L1 loss.
