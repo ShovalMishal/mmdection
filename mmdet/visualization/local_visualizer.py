@@ -159,7 +159,7 @@ class DetLocalVisualizer(Visualizer):
                     label_text,
                     pos,
                     colors=text_colors[i],
-                    font_sizes=int(13 * scales[i]),
+                    font_sizes=int(8 * scales[i]),
                     bboxes=[{
                         'facecolor': 'black',
                         'alpha': 0.8,
@@ -503,8 +503,9 @@ class DetLocalVisualizer(Visualizer):
 
         if out_file is not None:
             if save_separately:
-                gt_out_file = out_file.replace('.png', '_gt.png')
-                mmcv.imwrite(gt_img_data[..., ::-1], gt_out_file)
+                if draw_gt:
+                    gt_out_file = out_file.replace('.png', '_gt.png')
+                    mmcv.imwrite(gt_img_data[..., ::-1], gt_out_file)
                 pred_out_file = out_file.replace('.png', '_pred.png')
                 mmcv.imwrite(pred_img_data[..., ::-1], pred_out_file)
             else:
